@@ -5,7 +5,9 @@ import { Component } from '@angular/core';
   templateUrl: './post-create.component.html'
 })
 export default class PostCreateComponent {
+  enteredValue = ''
+  newPost = 'NO CONTENT'
 onAddPost() {
-  alert('Post Added')
+this.newPost = this.enteredValue
 }
 }
