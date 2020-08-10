@@ -8,9 +8,15 @@ class PostsService {
   getPosts() {
     return [...this.posts];
   }
+
+  getPostsUpdatedListener() {
+    return this.postsUpdated.asObservable();
+  }
+
   addPost(title: string, content: string) {
     const post: Post = { title, content };
     this.posts.push(post);
+    this.postsUpdated.next([...this.posts]);
   }
 }
 
