@@ -1,6 +1,5 @@
-interface Post {
+export interface Post {
+  id: string;
   title: string;
   content: string;
-  id: string;
 }
-export { Post };
