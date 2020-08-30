@@ -6,7 +6,6 @@ const Post = require("./models/post");
 
 const app = express();
 const uri = "";
-
 mongoose
   .connect(uri, { useNewUrlParser: true })
   .then(() => {
@@ -38,28 +37,18 @@ app.post("/api/posts", (req, res, next) => {
     title,
     content,
   });
-  console.log(post);
+  post.save();
   res.status(201).json({
     message: "Post added successfully",
   });
 });
 
 app.get("/api/posts", (req, res, next) => {
-  const posts = [
-    {
-      id: "fadf12421l",
-      title: "First server-side post",
-      content: "This is coming from the server",
-    },
-    {
-      id: "ksajflaj132",
-      title: "Second server-side post",
-      content: "This is coming from the server!",
-    },
-  ];
-  res.status(200).json({
-    message: "Posts fetched successfully!",
-    posts: posts,
+  Post.find().then((documents) => {
+    res.status(200).json({
+      message: "Posts fetched successfully!",
+      posts: documents,
+    });
   });
 });
 
