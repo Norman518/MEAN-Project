@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 const Post = require("./models/post");
 
 const app = express();
-const uri = "";
+const uri =
+  "mongodb+srv://Cheesecake:3RnNmLLXpxSrTueR@cluster0.nywtv.mongodb.net/node-angular?retryWrites=true&w=majority";
 
 mongoose
   .connect(uri, { useNewUrlParser: true })

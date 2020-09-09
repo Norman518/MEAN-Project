@@ -31,6 +31,12 @@ export class PostsService {
     return this.postsUpdated.asObservable();
   }
 
+  getPost(id: string) {
+    return {
+      ...this.posts.find((post) => post.id === id),
+    };
+  }
+
   addPost(title: string, content: string) {
     const post: Post = { id: null, title, content };
     this.http
