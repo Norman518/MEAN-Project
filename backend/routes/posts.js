@@ -1,12 +1,13 @@
 const express = require("express");
-const router = express.Router();
+
 const Post = require("../models/post");
 
+const router = express.Router();
+
 router.post("", (req, res, next) => {
-  const { title, content } = req.body;
   const post = new Post({
-    title,
-    content,
+    title: req.body.title,
+    content: req.body.content,
   });
   post.save().then((createdPost) => {
     res.status(201).json({
@@ -23,7 +24,7 @@ router.put("/:id", (req, res, next) => {
     content: req.body.content,
   });
   Post.updateOne({ _id: req.params.id }, post).then((result) => {
-    console.log(result);
+    res.status(200).json({ message: "Update successful!" });
   });
 });
 
@@ -41,9 +42,7 @@ router.get("/:id", (req, res, next) => {
     if (post) {
       res.status(200).json(post);
     } else {
-      res.status(404).json({
-        message: "Post not found!",
-      });
+      res.status(404).json({ message: "Post not found!" });
     }
   });
 });
@@ -51,9 +50,8 @@ router.get("/:id", (req, res, next) => {
 router.delete("/:id", (req, res, next) => {
   Post.deleteOne({ _id: req.params.id }).then((result) => {
     console.log(result);
-    res.status(200).json({ message: "Update successful!" });
+    res.status(200).json({ message: "Post deleted!" });
   });
-  res.status(200).json({ message: "Post deleted!" });
 });
 
 module.exports = router;
