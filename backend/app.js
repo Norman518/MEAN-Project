@@ -9,7 +9,7 @@ const uri =
   "mongodb+srv://Cheesecake:3RnNmLLXpxSrTueR@cluster0.nywtv.mongodb.net/node-angular?retryWrites=true&w=majority";
 
 mongoose
-  .connect(uri, { useNewUrlParser: true })
+  .connect(uri, { useUnifiedTopology: true, useNewUrlParser: true })
   .then(() => {
     console.log("Connected to database!");
   })
