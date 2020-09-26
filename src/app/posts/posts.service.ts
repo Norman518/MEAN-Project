@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Post } from './post.model';
+import { Post, ServerPost } from './post.model';
 import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
@@ -14,11 +14,12 @@ export class PostsService {
 
   getPosts() {
     this.http
-      .get<{ message: string; posts: any }>('http://localhost:3000/api/posts')
+      .get<{ message: string; posts: ServerPost[] }>('http://localhost:3000/api/posts')
       .pipe(
         map((postData) => {
-          return postData.posts.map((post) => {
-            return { title: post.title, content: post.content, id: post._id };
+          return postData.posts.map((post: ServerPost) => {
+            const { title, content, _id, imagePath } = post;
+            return { title, content, id: _id, imagePath };
           });
         })
       )
@@ -42,9 +43,10 @@ export class PostsService {
     postData.append('content', content);
     postData.append('image', image, title);
     this.http
-      .post<{ message: string; postId: string }>('http://localhost:3000/api/posts', postData)
+      .post<{ message: string; post: Post }>('http://localhost:3000/api/posts', postData)
       .subscribe((responseData) => {
-        const post: Post = { id: responseData.postId, title, content };
+        const { id, imagePath } = responseData.post;
+        const post: Post = { id, title, content, imagePath };
         this.posts.push(post);
         this.postsUpdated.next([...this.posts]);
         this.router.navigate(['/']);
@@ -52,7 +54,7 @@ export class PostsService {
   }
 
   updatePost(id: string, title: string, content: string) {
-    const post: Post = { id, title, content };
+    const post: Post = { id, title, content, imagePath: null };
     this.http.put('http://localhost:3000/api/posts/' + id, post).subscribe(() => {
       const updatedPosts = [...this.posts];
       const oldPostIndex = updatedPosts.findIndex((p) => p.id === post.id);
