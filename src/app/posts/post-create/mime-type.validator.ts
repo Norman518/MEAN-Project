@@ -17,7 +17,6 @@ export const mimeType = (
       for (const index of arr) {
         header += index.toString(16);
       }
-      console.log(header);
       switch (header) {
         case '89504e47':
         case 'ffd8ffe0':
