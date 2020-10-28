@@ -19,9 +19,9 @@ export class PostsService {
       .pipe(
         map((postData) => {
           return {
-            posts: postData.posts.map((post: ServerPost) => {
-              const { title, content, _id, imagePath } = post;
-              return { title, content, id: _id, imagePath };
+            posts: postData.posts.map((post) => {
+              const { title, content, _id, imagePath, creator } = post;
+              return { title, content, id: _id, imagePath, creator };
             }),
             maxPosts: postData.maxPosts,
           };

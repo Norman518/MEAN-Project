@@ -32,13 +32,14 @@ router.post(
   checkAuth,
   multer({ storage }).single("image"),
   (req, res, next) => {
-    const { body, protocol, file } = req;
+    const { body, protocol, file, userData } = req;
     const { title, content } = body;
     const url = protocol + "://" + req.get("host");
     const post = new Post({
       title,
       content,
       imagePath: url + "/images/" + file.filename,
+      creator: userData.userId,
     });
     post.save().then((createdPost) => {
       res.status(201).json({
