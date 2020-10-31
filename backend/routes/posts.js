@@ -58,7 +58,7 @@ router.put(
   checkAuth,
   multer({ storage }).single("image"),
   (req, res, next) => {
-    const { body, protocol, file } = req;
+    const { body, protocol, file, userData } = req;
     const { id, title, content, imagePath } = body;
     let path = imagePath;
     if (req.file) {
@@ -70,17 +70,17 @@ router.put(
       title,
       content,
       imagePath: path,
+      creator: userData.userId,
     });
-    Post.updateOne(
-      { _id: req.params.id, creator: req.userData.userId },
-      post
-    ).then((result) => {
-      if (result.nModified > 0) {
-        res.status(200).json({ message: "Update successful!" });
-      } else {
-        res.status(401).json({ message: "Not Authorized!" });
+    Post.updateOne({ _id: req.params.id, creator: userData.userId }, post).then(
+      (result) => {
+        if (result.nModified > 0) {
+          res.status(200).json({ message: "Update successful!" });
+        } else {
+          res.status(401).json({ message: "Not Authorized!" });
+        }
       }
-    });
+    );
   }
 );
 
